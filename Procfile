@@ -1,0 +1,1 @@
+web: gunicorn mtgtrendsapiproject.wsgi --log-file -
