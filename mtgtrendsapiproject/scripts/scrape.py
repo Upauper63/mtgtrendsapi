@@ -1,4 +1,3 @@
-from mtgtrendsapi.models import Items, Scrapes
 from bs4 import BeautifulSoup
 import datetime
 import urllib.request
@@ -7,11 +6,10 @@ import re
 
 import sys
 sys.path.append('../')
-from mtgtrendsapi.models import Items, Scrapes
-# from ...mtgtrendsapi.models import Items, Scrapes
+from mtgtrendsapi.models import Item, Scrape
 
 def run():
-    scrape_obj = Scrapes()
+    scrape_obj = Scrape()
     scrape_obj.save()
     scrape_id = scrape_obj.id
     x = (scrape_id - 1) % 4
@@ -48,7 +46,7 @@ def run():
                 price = int(re.sub(r"\D",'', price))
 
                 obj = ""
-                obj = Items.objects.filter(product_id = product_id, name = name).first()
+                obj = Item.objects.filter(product_id = product_id, name = name).first()
                 if obj and obj.name:
                     prev_x = (x - 1) % 4
                     dic = obj.__dict__
@@ -59,15 +57,15 @@ def run():
                         price_diff_prev = price - dic['price_' + str(prev_x)]
                         kwargs['price_diff_prev'] = price_diff_prev
                     for y in range(4):
-                        prev_scrape_obj = Scrapes.objects.filter(id = kwargs['scrape_' + str(y) + '_id']).first()
+                        prev_scrape_obj = Scrape.objects.filter(id = kwargs['scrape_' + str(y) + '_id']).first()
                         kwargs['scrape_' + str(y)] = prev_scrape_obj
                         kwargs.pop('scrape_' + str(y) + '_id')
                     kwargs['scrape_' + str(x)] = scrape_obj
-                    Items.objects.filter(product_id=product_id).delete()
-                    obj = Items(**kwargs)
+                    Item.objects.filter(product_id=product_id).delete()
+                    obj = Item(**kwargs)
                 else:
                     kwargs = {'product_id': product_id, 'name': name, 'scrape_' + str(x): scrape_obj, 'price_' + str(x): price}
-                    obj = Items(**kwargs)
+                    obj = Item(**kwargs)
                 if obj:
                     # レコード数に制限があるため、対象データに制限
                     if price < 300:
