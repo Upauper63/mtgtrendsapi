@@ -48,16 +48,21 @@ def run():
                 price = int(re.sub(r"\D",'', price))
 
                 obj = ""
-                obj = Items.objects.filter(product_id=product_id).first()
-                if obj.name:
+                obj = Items.objects.filter(product_id = product_id, name = name).first()
+                if obj and obj.name:
                     prev_x = (x - 1) % 4
                     dic = obj.__dict__
                     dic.pop('_state')
-                    price_diff_prev = price - dic['price_' + str(prev_x)]
                     kwargs = dic
-                    kwargs['scrape_' + str(x)] = scrape_obj
                     kwargs['price_' + str(x)] = price
-                    kwargs['price_diff_prev'] = price_diff_prev
+                    if 'price' in dic:
+                        price_diff_prev = price - dic['price_' + str(prev_x)]
+                        kwargs['price_diff_prev'] = price_diff_prev
+                    for y in range(4):
+                        prev_scrape_obj = Scrapes.objects.filter(id = kwargs['scrape_' + str(y) + '_id']).first()
+                        kwargs['scrape_' + str(y)] = prev_scrape_obj
+                        kwargs.pop('scrape_' + str(y) + '_id')
+                    kwargs['scrape_' + str(x)] = scrape_obj
                     Items.objects.filter(product_id=product_id).delete()
                     obj = Items(**kwargs)
                 else:
@@ -73,15 +78,18 @@ def run():
                     existPage = False
 
             i += 1
-            time.sleep(2)
+            time.sleep(10)
+            if i % 50 == 0:
+                time.sleep(600)
 
         except urllib.error.HTTPError as err:
-            print("{}-ErrorOccured:{}".format(err.code))
+            print("{} ErrorOccured:{}".format(err.code, err.reason))
             existPage = False
         except urllib.error.URLError as err:
-            print("{}-ErrorOccured:{}".format(err.reason))
+            print("{} ErrorOccured:{}".format(err.code, err.reason))
             existPage = False
         except:
+            print(sys.exc_info())
             existPage = False
             
     else:
