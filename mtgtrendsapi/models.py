@@ -24,3 +24,15 @@ class Item(models.Model):
         db_table = 'items'
     def __str__(self):
         return self.name
+    def get_trends(self):
+        trends = {}
+        if self.scrape_0:
+            trends[str(self.scrape_0.date)] = self.price_0
+        if self.scrape_1:
+            trends[str(self.scrape_1.date)] = self.price_1
+        if self.scrape_2:
+            trends[str(self.scrape_2.date)] = self.price_2
+        if self.scrape_3:
+            trends[str(self.scrape_3.date)] = self.price_3
+        trends = sorted(trends.items())
+        return trends

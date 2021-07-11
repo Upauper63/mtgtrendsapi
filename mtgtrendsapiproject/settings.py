@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'mtgtrendsapi.apps.MtgtrendsapiConfig',
     'rest_framework',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,11 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mtgtrendsapiproject.urls'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 50
+}
 
 TEMPLATES = [
     {
