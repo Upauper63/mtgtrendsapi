@@ -25,7 +25,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['upauper63-mtgtrendsapi.herokuapp.com']
+ALLOWED_HOSTS = ['upauper63-mtgtrendsapi.herokuapp.com', 'upauper63-mtgtrends.herokuapp.com']
 
 
 # Application definition
@@ -55,10 +55,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'mtgtrendsapiproject.urls'
 
-REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 50
-}
+# ページネーションは呼び出し側で実装？？？
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+#     'PAGE_SIZE': 50
+# }
 
 TEMPLATES = [
     {
