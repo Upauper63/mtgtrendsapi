@@ -80,8 +80,8 @@ def run():
 
             i += 1
             time.sleep(10)
-            if i % 50 == 0:
-                time.sleep(600)
+            if i % 40 == 0:
+                time.sleep(3600)
 
         except urllib.error.HTTPError as err:
             print("{} ErrorOccured:{}".format(err.code, err.reason))
