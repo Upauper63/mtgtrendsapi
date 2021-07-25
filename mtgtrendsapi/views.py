@@ -6,7 +6,7 @@ from .serializer import ItemsSerializer, ItemSerializer
 
 
 class ItemsViewSet(viewsets.ModelViewSet):
-    queryset = Item.objects.all().order_by('-diff_price_prev')
+    queryset = Item.objects.all().order_by('-diff_price_prev', '-current_price')
     serializer_class = ItemsSerializer
     filter_backends = [filters.SearchFilter]
     search_fields = ['name']

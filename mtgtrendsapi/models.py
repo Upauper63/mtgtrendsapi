@@ -11,6 +11,7 @@ class Scrape(models.Model):
 class Item(models.Model):
     product_id = models.IntegerField(db_index=True, blank=False, null=False)
     name = models.CharField(max_length=255, blank=False)
+    current_price = models.IntegerField(null=True)
     diff_price_prev = models.IntegerField(null=True)
     scrape_0 = models.ForeignKey(Scrape, related_name='scrape_0', on_delete=models.CASCADE, null=True)
     price_0 = models.IntegerField(null=True)

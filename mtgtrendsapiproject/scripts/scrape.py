@@ -16,6 +16,8 @@ def run():
     scrape_obj.save()
     scrape_id = scrape_obj.id
     x = (scrape_id - 1) % 4
+
+    Item.objects.all().update(currelt_price="")
     # 英語 ノーマル 値段高い順にソート
     ori_url = "https://www.hareruyamtg.com/ja/products/search?foilFlg%5B0%5D=0&language%5B0%5D=2&sort=price&order=DESC&page="
     items_class = ".itemList"
@@ -97,3 +99,4 @@ def run():
         scrape_obj.is_finished = True
         scrape_obj.finished_at = datetime.datetime.now()
         scrape_obj.save()
+        Item.objects.all().delete(currelt_price="")
