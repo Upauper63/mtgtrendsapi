@@ -56,15 +56,15 @@ def run():
                     dic.pop('_state')
                     kwargs = dic
                     kwargs['price_' + str(x)] = price
-                    if 'price' in dic:
-                        price_diff_prev = price - dic['price_' + str(prev_x)]
-                        kwargs['price_diff_prev'] = price_diff_prev
+                    if dic['price_' + str(prev_x)]:
+                        diff_price_prev = price - dic['price_' + str(prev_x)]
+                        kwargs['diff_price_prev'] = diff_price_prev
                     for y in range(4):
                         prev_scrape_obj = Scrape.objects.filter(id = kwargs['scrape_' + str(y) + '_id']).first()
                         kwargs['scrape_' + str(y)] = prev_scrape_obj
                         kwargs.pop('scrape_' + str(y) + '_id')
                     kwargs['scrape_' + str(x)] = scrape_obj
-                    Item.objects.filter(product_id=product_id).delete()
+                    Item.objects.filter(product_id=product_id, name = name).delete()
                     obj = Item(**kwargs)
                 else:
                     kwargs = {'product_id': product_id, 'name': name, 'scrape_' + str(x): scrape_obj, 'price_' + str(x): price}
@@ -80,7 +80,7 @@ def run():
 
             i += 1
             time.sleep(10)
-            if i % 40 == 0:
+            if i % 20 == 0:
                 time.sleep(3600)
 
         except urllib.error.HTTPError as err:
