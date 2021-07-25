@@ -17,7 +17,7 @@ def run():
     scrape_id = scrape_obj.id
     x = (scrape_id - 1) % 4
 
-    Item.objects.all().update(currelt_price="")
+    Item.objects.all().update(current_price=None)
     # 英語 ノーマル 値段高い順にソート
     ori_url = "https://www.hareruyamtg.com/ja/products/search?foilFlg%5B0%5D=0&language%5B0%5D=2&sort=price&order=DESC&page="
     items_class = ".itemList"
@@ -58,6 +58,7 @@ def run():
                     dic.pop('_state')
                     kwargs = dic
                     kwargs['price_' + str(x)] = price
+                    kwargs['current_price'] = price
                     if dic['price_' + str(prev_x)]:
                         diff_price_prev = price - dic['price_' + str(prev_x)]
                         kwargs['diff_price_prev'] = diff_price_prev
@@ -69,7 +70,7 @@ def run():
                     Item.objects.filter(product_id=product_id, name = name).delete()
                     obj = Item(**kwargs)
                 else:
-                    kwargs = {'product_id': product_id, 'name': name, 'scrape_' + str(x): scrape_obj, 'price_' + str(x): price}
+                    kwargs = {'product_id': product_id, 'name': name, 'scrape_' + str(x): scrape_obj, 'price_' + str(x): price, 'current_price': price}
                     obj = Item(**kwargs)
                 if obj:
                     # レコード数に制限があるため、対象データに制限
@@ -94,9 +95,10 @@ def run():
         except:
             print(sys.exc_info())
             existPage = False
+            Item.objects.filter(current_price=None).delete()
             
     else:
         scrape_obj.is_finished = True
         scrape_obj.finished_at = datetime.datetime.now()
         scrape_obj.save()
-        Item.objects.all().delete(currelt_price="")
+        Item.objects.filter(current_price=None).delete()
