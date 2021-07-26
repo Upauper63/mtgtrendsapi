@@ -89,6 +89,7 @@ def run():
                     url = "https://upauper63-mtgtrendsapi.herokuapp.com/"
                     request = urllib.request.Request(url=url, headers=headers)
                     urllib.request.urlopen(request)
+                    print('long sleep')
                     time.sleep(600)
 
         except urllib.error.HTTPError as err:
