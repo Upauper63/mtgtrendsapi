@@ -86,7 +86,7 @@ def run():
             if i % 20 == 0:
                 # herokuがスリープに入らないように分割して間隔時間をとる
                 for _ in range(10):
-                    url = "https://upauper63-mtgtrendsapi.herokuapp.com/"
+                    url = "https://upauper63-mtgtrendsapi.herokuapp.com/api/"
                     request = urllib.request.Request(url=url, headers=headers)
                     urllib.request.urlopen(request)
                     print('long sleep')
