@@ -88,17 +88,34 @@ def run():
 
         except urllib.error.HTTPError as err:
             print("{} ErrorOccured:{}".format(err.code, err.reason))
+            scrape_obj.is_finished = True
+            scrape_obj.finished_at = datetime.datetime.now()
+            scrape_obj.status = 2
+            scrape_obj.status_info = str(err.code) + ':' + str(err.reason)
+            scrape_obj.save()
             existPage = False
+            Item.objects.filter(current_price=None).delete()
         except urllib.error.URLError as err:
             print("{} ErrorOccured:{}".format(err.code, err.reason))
+            scrape_obj.is_finished = True
+            scrape_obj.finished_at = datetime.datetime.now()
+            scrape_obj.status = 3
+            scrape_obj.status_info = str(err.code) + ':' + str(err.reason)
+            scrape_obj.save()
             existPage = False
+            Item.objects.filter(current_price=None).delete()
         except:
             print(sys.exc_info())
+            scrape_obj.is_finished = True
+            scrape_obj.finished_at = datetime.datetime.now()
+            scrape_obj.status = 4
+            scrape_obj.status_info = str(sys.exc_info())
             existPage = False
             Item.objects.filter(current_price=None).delete()
             
     else:
         scrape_obj.is_finished = True
         scrape_obj.finished_at = datetime.datetime.now()
+        scrape_obj.status = 1
         scrape_obj.save()
         Item.objects.filter(current_price=None).delete()

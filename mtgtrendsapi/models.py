@@ -5,6 +5,15 @@ class Scrape(models.Model):
     started_at = models.DateTimeField(auto_now_add=True)
     finished_at = models.DateTimeField(null=True)
     is_finished = models.BooleanField(null=True)
+    STATUS_CHOICES = (
+        (0, 'Unknown'),
+        (1, 'Success'),
+        (2, 'HTTPError'),
+        (3, 'URLError'),
+        (4, 'Others'),
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
+    status_info = models.TextField(null=True)
     class Meta:
         db_table = 'scrapes'
 
