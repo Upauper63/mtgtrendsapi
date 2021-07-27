@@ -16,6 +16,8 @@ class Scrape(models.Model):
     status_info = models.TextField(null=True)
     class Meta:
         db_table = 'scrapes'
+    def __str__(self):
+        return self.date.strftime('%Y-%m-%d')
 
 class Item(models.Model):
     product_id = models.IntegerField(db_index=True, blank=False, null=False)

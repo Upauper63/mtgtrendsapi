@@ -82,15 +82,14 @@ def run():
                     existPage = False
 
             i += 1
-            time.sleep(10)
+            time.sleep(5)
             if i % 20 == 0:
                 # herokuがスリープに入らないように分割して間隔時間をとる
                 for _ in range(10):
                     url = "https://upauper63-mtgtrendsapi.herokuapp.com/api/"
                     request = urllib.request.Request(url=url, headers=headers)
                     urllib.request.urlopen(request)
-                    print('long sleep')
-                    time.sleep(600)
+                    time.sleep(360)
 
         except urllib.error.HTTPError as err:
             print("{} ErrorOccured:{}".format(err.code, err.reason))
