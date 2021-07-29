@@ -82,7 +82,7 @@ def run():
                     existPage = False
 
             i += 1
-            time.sleep(5)
+            time.sleep(10)
             if i % 20 == 0:
                 # herokuがスリープに入らないように分割して間隔時間をとる
                 for _ in range(10):
