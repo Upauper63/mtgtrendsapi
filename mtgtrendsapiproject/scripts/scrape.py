@@ -10,8 +10,8 @@ from mtgtrendsapi.models import Item, Scrape
 
 def run():
     # HerokuSchedulerで1週間沖にJobが動くための条件
-    # if not datetime.date.today().weekday() % 7 == 0:
-    #     return
+    if not datetime.date.today().weekday() % 7 == 0:
+        return
     scrape_obj = Scrape()
     scrape_obj.save()
     scrape_id = scrape_obj.id
